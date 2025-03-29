@@ -29,6 +29,20 @@ pipeline {
   //      }
   //    }
   //  }
+
+  stage('Debug Credentials') {
+    steps {
+        script {
+            // List available credentials (be careful with this in production)
+            echo "Checking credentials..."
+            withCredentials([usernamePassword(credentialsId: 'docker', 
+                            usernameVariable: 'USER', 
+                            passwordVariable: 'PASS')]) {
+                echo "Credentials found for user: ${USER}"
+            }
+        }
+    }
+}
   stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "alekhya510/jenkins-cicd:${BUILD_NUMBER}"
